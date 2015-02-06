@@ -139,6 +139,15 @@ and then adds variables specific to whichever template set you're working
 with.  For now, get_all_vars() needs to be edited to set the correct 
 template-specific variables.
 
+=head1 GOAL
+
+Ultimately, I'd like all template sets to live in subdirectories of the same 
+branch, and all content to live in some sort of database (SQLite most likely).
+
+make.pl will then be assigned a template set, and will draw content from the 
+single database and apply it to whichever template set was chosen, so the 
+entire site's look can be changed by a single run of make.pl.
+
 =head1 AUTHOR
 
 Jonathan D. Barton (jdbarton@gmail.com)
