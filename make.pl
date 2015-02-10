@@ -1,9 +1,11 @@
 #!/usr/bin/env perl 
 
+###
 ### Search on CHECK
 ###
 ### I left off working on index.tmpl.  It still has boilerplate project 
 ### thumbnails along with my real project thumbs.
+###
 
 use v5.20;
 use utf8;
