@@ -4,77 +4,14 @@
 <!--[if (gte IE 8)|!(IE)]><!--><html class="no-js" lang="en"> <!--<![endif]-->
 <head>
 
-    <title>Contact Page | Jon's Site</title>
-    
-    <!--- Basic Page Needs
-    ================================================== -->
-    <meta charset="utf-8">
-	<meta name="description" content="">
-	<meta name="author" content="">
-
-    <!-- Mobile Specific Metas
-    ================================================== -->
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-	<!-- CSS
-    ================================================== -->
-    <link rel="stylesheet" href="css/default.css">
-	<link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/media-queries.css">
-
-    <!-- Script
-    ================================================== -->
-	<script src="js/modernizr.js"></script>
-
-    <!-- Favicons
-	================================================== -->
-	<link rel="shortcut icon" href="favicon.ico" > 
-
-
+    <title>Contact Page | [% top_title %]</title>
+    [% dochead %]
 
 </head>
 
 <body>
 
-    
-    <!-- Header
-    ================================================== -->
-    <header>
-        <div class="row">
-            <div class="twelve columns">
-                <!--
-                <div class="logo">
-                    <a href="index.html"><img alt="" src="images/logo.png"></a>
-                </div>
-                -->
-
-                <nav id="nav-wrap">
-                    <a class="mobile-btn" href="#nav-wrap" title="Show navigation">Show navigation</a>
-                    <a class="mobile-btn" href="#" title="Hide navigation">Hide navigation</a>
-                    <ul id="nav" class="nav">
-                        <li class="current"><a href="index.html">Home</a></li>
-                        <li><span><a href="blog.html">Blog</a></span>
-                            <ul>
-                                <li><a href="blog.html">Blog Index</a></li>
-                                <li><a href="single.html">Post</a></li>
-                            </ul>
-                        </li>
-                        <li><span><a href="portfolio-index.html">Portfolio</a></span>
-                            <ul>
-                                <li><a href="portfolio-index.html">Portfolio Index</a></li>
-                                <li><a href="lacunawax.html">LacunaWaX</a></li>
-                                <li><a href="montylacuna.html">MontyLacuna</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                    </ul> <!-- end #nav -->
-                </nav> <!-- end #nav-wrap -->
-            </div>
-        </div>
-    </header> <!-- Header End -->
-
-
+    [% header %]
 
    <!-- Page Title
    ================================================== -->
@@ -172,23 +109,18 @@
                     <div class="widget widget_contact">
                         <h5>Address and Phone</h5>
                         <p class="address">
-                                                            Some Studio<br>
-                                                            123 Main Street<br>
-                                                            Hereville, HR 12345<br>
-                            
-                            <span>(123) 456-7890 ext. abc</span>
+                            [% FOR l = physical_address -%]
+                                [% l %]<br>
+                            [% END %]
+                            <span>[% phone %]</span>
                         </p>
 
                         <h5>Email and Social</h5>
                         <p>
-                        E-mail: info@example.com<br>
-                        
-                            Facebook: <a href="http://www.facebook.com/example">Example FB page</a><br>
-                        
-                            Google +: <a href="http://plus.google.com/example">Example G+ page</a><br>
-                        
-                            Twitter: <a href="http://twitter.com/example">@example</a><br>
-                        
+                        E-mail: [% email.info %]<br>
+                        [% FOREACH pair = social.pairs %]
+                            [% pair.value.type %]: <a href="[% pair.value.url %]">[% pair.value.label %]</a><br>
+                        [% END %]
                         </p>
                     </div>
 
@@ -210,47 +142,7 @@
         </div>
     </div> <!-- Content End-->
 
-   
-   <!-- footer
-   ================================================== -->
-   <footer>
-      <div class="row">
-         <div class="twelve columns">
-            <ul class="footer-nav">
-                <li><a href="#">Home.</a></li>
-              	<li><a href="#">Blog.</a></li>
-              	<li><a href="#">Portfolio.</a></li>
-              	<li><a href="#">About.</a></li>
-              	<li><a href="#">Contact.</a></li>
-               <li><a href="#">Features.</a></li>
-            </ul>
-            <ul class="footer-social">
-               <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-               <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-               <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-               <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-               <li><a href="#"><i class="fa fa-skype"></i></a></li>
-               <li><a href="#"><i class="fa fa-rss"></i></a></li>
-            </ul>
-            <ul class="copyright">
-               <li>Copyright &copy; 2014 Sparrow</li> 
-               <li>Design by <a href="http://www.styleshout.com/">Styleshout</a></li> 
-            </ul>
-         </div>
-         <div id="go-top" style="display: block;"><a title="Back to Top" href="#">Go To Top</a></div>
-      </div>
-   </footer> <!-- Footer End-->
-
-
-       <!-- Java Script
-    ================================================== -->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="js/jquery-1.10.2.min.js"></script>')</script>
-    <script type="text/javascript" src="js/jquery-migrate-1.2.1.min.js"></script>
-
-    <script src="js/jquery.flexslider.js"></script>
-    <script src="js/doubletaptogo.js"></script>
-    <script src="js/init.js"></script> 
-
+   [% footer %]
+   [% bottom_js %]
 
 </body> </html>

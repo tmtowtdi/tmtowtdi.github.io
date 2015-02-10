@@ -37,6 +37,8 @@ sub get_all_vars() {#{{{
 }#}}}
 sub get_default_vars() {#{{{
     my $vars =  {
+        blog_posts          => get_recent_blog_posts(),
+        ctoa                => get_call_to_action_variables(),
         email               => get_company_emails(),
         social              => get_company_social_accounts(),
         phone               => "(123) 456-7890 ext. abc",
@@ -46,8 +48,8 @@ sub get_default_vars() {#{{{
     };
 
     $vars = add_about_page_variables($vars);
-    $vars = add_team_variables($vars);
     $vars = add_slide_variables($vars);
+    $vars = add_team_variables($vars);
 
     return $vars;
 }#}}}
@@ -59,11 +61,6 @@ sub add_about_page_variables( $vars ) {#{{{
     @$vars{ keys %$about } = values %$about;
     return $vars;
 }#}}}
-sub add_sparrow_vars( $vars ) {#{{{
-    $vars->{'header'} = get_sparrow_header();
-    $vars->{'blurbs'} = get_sparrow_index_column_blurbs();
-    return $vars;
-}#}}}
 sub add_team_variables( $vars ) {#{{{
     my $team =  {
         team_header     => "Meet our talented team.",
@@ -73,19 +70,54 @@ sub add_team_variables( $vars ) {#{{{
     @$vars{ keys %$team } = values %$team;
     return $vars;
 }#}}}
+sub get_call_to_action_variables( ) {#{{{
+
+    ### This whole section is optional.  To skip this section, just return an 
+    ### empty hashref.
+    ###
+    ### This stands out from the rest of the page.  "Call your congressman!" 
+    ### "Big sale on Friday", etc.
+    ### 
+    ### This section is somewhat free-form.  The only key you have to have in 
+    ### the hashref if you want this section to display is "text".  If you 
+    ### want markup in your that section, you're going to have to add it here.
+    ###
+    ### "header" and "link" often make sense, and get used by the template if 
+    ### they're in the hashref, but they're not required.
+    ###
+    ### CHECK
+    ### Because of the free-formy-ness of the text section, this might need to 
+    ### get overwritten on a per-template basis, if a certain template 
+    ### requires its own unique <span> or whatever.
+
+    my $ctoa =  {
+        header  => "Host This Template Somewhere.",
+        text    => "Looking for an awesome and reliable webhosting? Try DreamHost. Get 50 off when you sign up with the promocode STYLESHOUT.  50 what, you ask?  Dollars?  Percent?  Cents?  I dunno, it's not stated.",
+        link    => "http://www.example.com",
+    };
+    @$vars{ keys %$ctoa } = values %$ctoa;
+    return $vars;
+}#}}}
 sub add_slide_variables( $vars ) {#{{{
     $vars->{'slides'} = [
         {
+            ### Required
             header      => 'LacunaWaX',
-            desc        => "Aenean condimentum, lacus sit amet luctus lobortis, dolores et quas molestias excepturi enim tellus ultrices elit, amet consequat enim elit noneas sit amet luctu. lacus sit amet luctus lobortis, dolores et quas molestias excepturi enim tellus ultrices elit.",
+            desc        => "An installable GUI toolkit for The Lacuna Expanse.  No scripting knowledge requried.",
             image       => "images/sliders/slide-wax.png",
+
+            ### Optional, but include it.
             image_alt   => "LacunaWaX Screenshot",
+
+            ### Optional
+            link        => "lacunawax.html",
         },
         {
             header      => 'MontyLacuna',
-            desc        => "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti eos et accusamus. amet consequat enim elit noneas sit amet luctu.  lacus sit amet luctus lobortis.  Aenean condimentum, lacus sit amet luctus.",
-            image       => "images/sliders/slide-wax.png",
+            desc        => "A GLC port to Python.  Easier and quicker to install, not to mention buggier!",
+            image       => "images/sliders/slide-monty.png",
             image_alt   => "MontyLacuna Documentation Screenshot",
+            link        => "montylacuna.html",
         },
     ];
     return $vars;
@@ -122,7 +154,7 @@ sub get_portfolio() {#{{{
         {
             name        => 'LacunaWaX',
             template    => 'portfolio-entry.tmpl',
-            output_file => 'lacunawax.html',
+            local_path  => 'lacunawax.html',
             caption     => 'TLE GUI Client',
             images      => [
                 ### The first image gets used as the thumbnail.
@@ -147,7 +179,7 @@ sub get_portfolio() {#{{{
         {
             name    => 'MontyLacuna',
             template    => 'portfolio-entry.tmpl',
-            output_file => 'montylacuna.html',
+            local_path  => 'montylacuna.html',
             caption => 'TLE Python Client',
             images  => [
                 {
@@ -161,84 +193,41 @@ sub get_portfolio() {#{{{
             date                => "November 2014",
             skills              => "Python, JSON-RPC 2.0",
             project_url         => "http://tmtowtdi.github.io/MontyLacuna/",
-        }
+        },
+
     ];
     return $portfolio;
 }#}}}
-sub get_sparrow_header {#{{{
-    ### CHECK
-    ### I need to templatize this so I can create a Portfolio entry per 
-    ### project.
-    return <<EOH;
+sub get_recent_blog_posts {#{{{
 
-   <!-- Header
-   ================================================== -->
-   <header>
-
-      <div class="row">
-
-         <div class="twelve columns">
-
-            <div class="logo">
-               <a href="index.html"><img alt="" src="images/logo.png"></a>
-            </div>
-
-            <nav id="nav-wrap">
-
-               <a class="mobile-btn" href="#nav-wrap" title="Show navigation">Show navigation</a>
-	            <a class="mobile-btn" href="#" title="Hide navigation">Hide navigation</a>
-
-               <ul id="nav" class="nav">
-
-	               <li class="current"><a href="index.html">Home</a></li>
-	               <li><span><a href="blog.html">Blog</a></span>
-                     <ul>
-                        <li><a href="blog.html">Blog Index</a></li>
-                        <li><a href="single.html">Post</a></li>
-                     </ul>
-                  </li>
-                  <li><span><a href="portfolio-index.html">Portfolio</a></span>
-                     <ul>
-                        <li><a href="portfolio-index.html">Portfolio Index</a></li>
-                        <li><a href="lacunawax.html">LacunaWaX</a></li>
-                        <li><a href="montylacuna.html">MontyLacuna</a></li>
-                     </ul>
-                  </li>
-	               <li><a href="about.html">About</a></li>
-                  <li><a href="contact.html">Contact</a></li>
-                  <li><a href="styles.html">Features</a></li>
-
-               </ul> <!-- end #nav -->
-
-            </nav> <!-- end #nav-wrap -->
-
-         </div>
-
-      </div>
-
-   </header> <!-- Header End -->
-
-EOH
-}#}}}
-sub get_sparrow_index_column_blurbs {#{{{
-    return [
+    ### This should only return the top 3 or 5 (or whatever) recent blog 
+    ### posts, and only their summaries.  It's for posting on "see what we've 
+    ### been up to" sections, not for posting on the actual blog section.
+    my $a = [
         {
-            header  => "Clean &amp; Modern",
-            text    => "Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
+            author  => 'Jonathan D. Barton',
+            date    => 'Jan 31, 2014',
+            link    => 'single.html',
+            summary => 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium.',
+            title   => 'Proin gravida nibh vel velit auctor aliquet Aenean sollicitudin auctor.',
         },
         {
-            header  => "Responsive",
-            text    => "Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
+            author  => 'Joe R. Blow',
+            date    => 'Feb 1, 2014',
+            link    => 'single.html',
+            summary => 'Iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium.',
+            title   => 'Flurble blargle!',
         },
         {
-            header  => "HTML5 + CSS3",
-            text    => "Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
-        },
-        {
-            header  => "Free of Charge",
-            text    => "Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
+            author  => 'Steve Wozniak',
+            date    => 'Dec 1, 2005',
+            link    => 'single.html',
+            summary => "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in laborum.",
+            title   => "What's the deal with the turtlenecks?",
         },
     ];
+
+    return $a;
 }#}}}
 sub get_team_intro {#{{{
     my $paragraphs = [
@@ -293,16 +282,13 @@ sub get_template_list() {#{{{
         # template   => html file to be written to
         'index.tmpl'            => 'index.html',
         'portfolio-index.tmpl'  => 'portfolio-index.html',
-        #'lacunawax.tmpl'        => 'lacunawax.html',
+        'contact.tmpl'          => 'contact.html',
         'about.tmpl'            => 'about.html',
     }
 }#}}}
 sub show_vars_and_die( $vars ) {#{{{
-    say Dumper $vars;
-    say "--------------------------------";
-    for my $v (keys %$vars) {
-        say $v
-    }
+    my $d = Data::Dumper->new([ $vars ]);
+    say $d->Dump;
     exit;
 }#}}}
 sub write_output_files( $tt, $tmpls, $vars ) {#{{{
@@ -318,12 +304,175 @@ sub write_portfolio_entry_files( $tt, $vars ) {#{{{
     ### sure they're needed.
     for my $p( @{$vars->{'portfolio'}} ) {
         my $in  = $p->{'template'};
-        my $out = $p->{'output_file'};
+        my $out = $p->{'local_path'};
         @$p{ keys %$vars } = values %$vars;
         $tt->process( $in, $p, $out ) || die $tt->error();
     }
 }#}}}
 
+sub add_sparrow_vars( $vars ) {#{{{
+    $vars->{'dochead'}      = get_sparrow_dochead();    # Common contents of <head> ... </head>
+    $vars->{'header'}       = get_sparrow_header();     # visible page header
+    $vars->{'footer'}       = get_sparrow_footer();
+    $vars->{'bottom_js'}    = get_sparrow_bottom_js();
+    $vars->{'blurbs'}       = get_sparrow_index_column_blurbs();
+    return $vars;
+}#}}}
+sub get_sparrow_bottom_js {#{{{
+    ### Javascript that needs to appear at the bottom of every page, just 
+    ### above the </body> tag.
+    return <<EOJ;
+    <!-- Java Script
+    ================================================== -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/jquery-1.10.2.min.js"><\/script>')</script>
+    <script type="text/javascript" src="js/jquery-migrate-1.2.1.min.js"></script>
+
+    <script src="js/jquery.flexslider.js"></script>
+    <script src="js/doubletaptogo.js"></script>
+    <script src="js/init.js"></script> 
+EOJ
+}#}}}
+sub get_sparrow_dochead {#{{{
+
+    ### This is only for <head> contents common to all pages on the site.  You 
+    ### can still add additional head content as needed on a 
+    ### template-by-template basis.  eg the <title> will be different on each 
+    ### page, so it's not seen below.
+
+    return <<EOD;
+
+    <!--- Basic Page Needs
+    ================================================== -->
+    <meta charset="utf-8">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+    <!-- Mobile Specific Metas
+    ================================================== -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="css/default.css">
+	<link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/media-queries.css">
+
+    <!-- Script
+    ================================================== -->
+	<script src="js/modernizr.js"></script>
+
+    <!-- Favicons
+	================================================== -->
+	<link rel="shortcut icon" href="favicon.ico" > 
+
+EOD
+}#}}}
+sub get_sparrow_header {#{{{
+    ### CHECK
+    ### I need to templatize this so I can create a Portfolio entry per 
+    ### project.
+    ###
+    ### "logo.png" is the "sparrow" logo, and would need to be changed.
+    return <<EOH;
+
+    <!-- Header
+    ================================================== -->
+    <header>
+        <div class="row">
+            <div class="twelve columns">
+                <!--
+                <div class="logo">
+                    <a href="index.html"><img alt="" src="images/logo.png"></a>
+                </div>
+                -->
+
+                <nav id="nav-wrap">
+                    <a class="mobile-btn" href="#nav-wrap" title="Show navigation">Show navigation</a>
+                    <a class="mobile-btn" href="#" title="Hide navigation">Hide navigation</a>
+                    <ul id="nav" class="nav">
+                        <li class="current"><a href="index.html">Home</a></li>
+                        <li><span><a href="blog.html">Blog</a></span>
+                            <ul>
+                                <li><a href="blog.html">Blog Index</a></li>
+                                <li><a href="single.html">Post</a></li>
+                            </ul>
+                        </li>
+                        <li><span><a href="portfolio-index.html">Portfolio</a></span>
+                            <ul>
+                                <li><a href="portfolio-index.html">Portfolio Index</a></li>
+                                <li><a href="lacunawax.html">LacunaWaX</a></li>
+                                <li><a href="montylacuna.html">MontyLacuna</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul> <!-- end #nav -->
+                </nav> <!-- end #nav-wrap -->
+            </div>
+        </div>
+    </header> <!-- Header End -->
+
+EOH
+}#}}}
+sub get_sparrow_footer {#{{{
+    ### CHECK
+    ### I need to templatize this so I can create a Portfolio entry per 
+    ### project, and otherwise mangle the navigation.
+    return <<EOF;
+
+   <!-- footer
+   ================================================== -->
+   <footer>
+      <div class="row">
+         <div class="twelve columns">
+            <ul class="footer-nav">
+                <li><a href="#">Home.</a></li>
+              	<li><a href="#">Blog.</a></li>
+              	<li><a href="#">Portfolio.</a></li>
+              	<li><a href="#">About.</a></li>
+              	<li><a href="#">Contact.</a></li>
+               <li><a href="#">Features.</a></li>
+            </ul>
+            <ul class="footer-social">
+               <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+               <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+               <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+               <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+               <li><a href="#"><i class="fa fa-skype"></i></a></li>
+               <li><a href="#"><i class="fa fa-rss"></i></a></li>
+            </ul>
+            <ul class="copyright">
+               <li>Copyright &copy; 2014 Sparrow</li> 
+               <li>Design by <a href="http://www.styleshout.com/">Styleshout</a></li> 
+            </ul>
+         </div>
+         <div id="go-top" style="display: block;"><a title="Back to Top" href="#">Go To Top</a></div>
+      </div>
+   </footer> <!-- Footer End-->
+
+EOF
+}#}}}
+sub get_sparrow_index_column_blurbs {#{{{
+    return [
+        {
+            header  => "Column 1",
+            text    => "Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
+        },
+        {
+            header  => "Column 2",
+            text    => "Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
+        },
+        {
+            header  => "Column 3",
+            text    => "Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
+        },
+        {
+            header  => "Column 4",
+            text    => "Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
+        },
+    ];
+}#}}}
 
 
 __END__
