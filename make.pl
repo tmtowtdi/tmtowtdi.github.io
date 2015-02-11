@@ -20,9 +20,9 @@ use Data::Dumper; $Data::Dumper::Indent = 1;
 use Template;
 
 ### Must exist as a subdirectory of ./tmpl/
-#my $skin = 'sparrow';
+my $skin = 'sparrow';
 #my $skin = 'keepitsimple';
-my $skin = 'gh_default';
+#my $skin = 'gh_default';
 
 my $tt          = get_tt();
 my $vars        = get_all_vars();
