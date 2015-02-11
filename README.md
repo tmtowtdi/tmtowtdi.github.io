@@ -1,8 +1,29 @@
 
+# README
+
+## Template sources
 Most skins came from http://www.styleshout.com/, with the exception of the 
 gh_default skin, which was created with GitHub's automatic page generator.
 
-Set up a new skin
+## TBD
+- Templatized skins
+  - gh_default
+  - sparrow
+  - keepitsimple
+- Still need to be templatized
+  - pageone
+  - freshpick
+- After templatizing a skin, remove its branch.
+
+All skins, including the ones that have been templatized, have a large amount of 
+boilerplate/lorem text that needs to be swapped out for real text.
+
+## Dump website with a different skin
+Edit make.pl -- uncomment the ``$skin = 'SKIN_YOU_WANT';`` and be sure the other ``$skin`` 
+assignments are commented.  Then run make.pl.  All current .html files will be replaced by 
+files using that skin.
+
+## Set up a new skin
     - Name it.
         - For consistency, go with one word, all lc
 
