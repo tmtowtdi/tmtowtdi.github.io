@@ -16,14 +16,16 @@ use open        qw(:std :utf8);
 
 use experimental 'signatures';
 
-use Data::Dumper;
+use Data::Dumper; $Data::Dumper::Indent = 1;
 use Template;
 
 ### Must exist as a subdirectory of ./tmpl/
 my $skin = 'sparrow';
+#my $skin = 'keepitsimple';
 
 my $tt          = get_tt();
 my $vars        = get_all_vars();
+
 if( 0 ) { show_vars_and_die( $vars ); }
 
 my $templates   = get_template_list();
@@ -36,9 +38,11 @@ sub get_all_vars() {#{{{
     if( $skin eq 'sparrow' ) {
         $vars = add_sparrow_vars($vars);
     }
+    elsif( $skin eq 'keepitsimple' ) {
+        $vars = add_keepitsimple_vars($vars);
+    }
 
-    ### Add calls to other more specific var setters.  We might need subs 
-    ### specific to one or more templates for whatever reason.
+    return $vars;
 }#}}}
 sub get_default_vars() {#{{{
     my $vars =  {
@@ -288,9 +292,18 @@ sub get_template_list() {#{{{
 
         sparrow => {
             'index.tmpl'            => 'index.html',
+            'blog.tmpl'             => 'blog.html',
             'portfolio-index.tmpl'  => 'portfolio-index.html',
             'contact.tmpl'          => 'contact.html',
             'about.tmpl'            => 'about.html',
+        },
+        keepitsimple => {
+            'index.tmpl'    => 'index.html',
+            'demo.tmpl'     => 'demo.html',
+            'archives.tmpl' => 'archives.html',
+            'blog.tmpl'     => 'blog.html',
+            'page.tmpl'     => 'page.html',
+            'single.tmpl'   => 'single.html',
         }
     };
     return $templates->{$skin};
@@ -308,10 +321,9 @@ sub write_output_files( $tt, $tmpls, $vars ) {#{{{
     write_portfolio_entry_files( $tt, $vars );
 }#}}}
 sub write_portfolio_entry_files( $tt, $vars ) {#{{{
-    ### CHECK
-    ### This is still not handling the next/prev links at the bottom.  Not 
-    ### sure they're needed.
     for my $p( @{$vars->{'portfolio'}} ) {
+        my $path = join '/', ($tt->{'SERVICE'}{'CONTEXT'}{'CONFIG'}{'INCLUDE_PATH'}, $p->{'template'});
+        next unless -e $path;
         my $in  = $p->{'template'};
         my $out = $p->{'local_path'};
         @$p{ keys %$vars } = values %$vars;
@@ -320,6 +332,7 @@ sub write_portfolio_entry_files( $tt, $vars ) {#{{{
 }#}}}
 
 sub add_sparrow_vars( $vars ) {#{{{
+    $vars->{'inc'}          = "skins/sparrow/";        # MUST end with a slash
     $vars->{'dochead'}      = get_sparrow_dochead();    # Common contents of <head> ... </head>
     $vars->{'header'}       = get_sparrow_header();     # visible page header
     $vars->{'footer'}       = get_sparrow_footer();
@@ -334,13 +347,22 @@ sub get_sparrow_bottom_js {#{{{
     <!-- Java Script
     ================================================== -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="js/jquery-1.10.2.min.js"><\/script>')</script>
-    <script type="text/javascript" src="js/jquery-migrate-1.2.1.min.js"></script>
+    <script>window.jQuery || document.write('<script src="skins/sparrow/js/jquery-1.10.2.min.js"><\/script>')</script>
+    <script type="text/javascript" src="skins/sparrow/js/jquery-migrate-1.2.1.min.js"></script>
 
-    <script src="js/jquery.flexslider.js"></script>
-    <script src="js/doubletaptogo.js"></script>
-    <script src="js/init.js"></script> 
+    <script src="skins/sparrow/js/jquery.flexslider.js"></script>
+    <script src="skins/sparrow/js/doubletaptogo.js"></script>
+    <script src="skins/sparrow/js/init.js"></script> 
 EOJ
+}#}}}
+sub get_sparrow_doctype {#{{{
+
+    return <<EOT;
+<!DOCTYPE html>
+<!--[if lt IE 8 ]><html class="no-js ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="no-js ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 8)|!(IE)]><!--><html class="no-js" lang="en"> <!--<![endif]-->
+EOT
 }#}}}
 sub get_sparrow_dochead {#{{{
 
@@ -363,13 +385,13 @@ sub get_sparrow_dochead {#{{{
 
 	<!-- CSS
     ================================================== -->
-    <link rel="stylesheet" href="css/default.css">
-	<link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/media-queries.css">
+    <link rel="stylesheet" href="skins/sparrow/css/default.css">
+	<link rel="stylesheet" href="skins/sparrow/css/layout.css">
+    <link rel="stylesheet" href="skins/sparrow/css/media-queries.css">
 
     <!-- Script
     ================================================== -->
-	<script src="js/modernizr.js"></script>
+	<script src="skins/sparrow/js/modernizr.js"></script>
 
     <!-- Favicons
 	================================================== -->
@@ -392,7 +414,7 @@ sub get_sparrow_header {#{{{
             <div class="twelve columns">
                 <!--
                 <div class="logo">
-                    <a href="index.html"><img alt="" src="images/logo.png"></a>
+                    <a href="index.html"><img alt="" src="skins/sparrow/images/logo.png"></a>
                 </div>
                 -->
 
@@ -425,9 +447,6 @@ sub get_sparrow_header {#{{{
 EOH
 }#}}}
 sub get_sparrow_footer {#{{{
-    ### CHECK
-    ### I need to templatize this so I can create a Portfolio entry per 
-    ### project, and otherwise mangle the navigation.
     return <<EOF;
 
    <!-- footer
@@ -481,6 +500,160 @@ sub get_sparrow_index_column_blurbs {#{{{
             text    => "Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
         },
     ];
+}#}}}
+
+sub add_keepitsimple_vars( $vars ) {#{{{
+    $vars->{'inc'}          = "skins/keepitsimple/";        # MUST end with a slash
+    $vars->{'doctype'}      = get_keepitsimple_doctype();    # Above <head> tag
+    $vars->{'dochead'}      = get_keepitsimple_dochead();    # Common contents of <head> ... </head>
+    $vars->{'header'}       = get_keepitsimple_header();     # visible page header
+    $vars->{'footer'}       = get_keepitsimple_footer();
+    $vars->{'bottom_js'}    = get_keepitsimple_bottom_js();
+    return $vars;
+}#}}}
+sub get_keepitsimple_doctype {#{{{
+
+    return <<EOT;
+<!DOCTYPE html>
+<!--[if lt IE 8 ]><html class="no-js ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="no-js ie ie8" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="no-js ie ie9" lang="en"> <![endif]-->
+<!--[if (gte IE 8)|!(IE)]><!--><html class="no-js" lang="en"> <!--<![endif]-->
+EOT
+}#}}}
+sub get_keepitsimple_dochead {#{{{
+
+    return <<EOD;
+    <!--- Basic Page Needs
+    ================================================== -->
+    <meta charset="utf-8">
+	<meta name="description" content=""> 
+	<meta name="author" content="">
+
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="css/default.css">
+	<link rel="stylesheet" href="css/layout.css"> 
+	<link rel="stylesheet" href="css/media-queries.css"> 
+
+    <!-- Script
+    ================================================== -->
+	<script src="js/modernizr.js"></script>
+
+    <!-- Favicons
+	================================================== -->
+	<link rel="shortcut icon" href="favicon.png" >
+EOD
+}#}}}
+sub get_keepitsimple_header {#{{{
+    return <<EOH;
+
+    <!-- Header
+    ================================================== -->
+    <header id="top">
+   	<div class="row">
+   		<div class="header-content twelve columns">
+            <h1 id="logo-text"><a href="index.html" title="">Keep It Simple.</a></h1>
+            <p id="intro">Put your awesome slogan here...</p>
+        </div> 
+    </div>
+    <nav id="nav-wrap"> 
+        <a class="mobile-btn" href="#nav-wrap" title="Show navigation">Show Menu</a>
+        <a class="mobile-btn" href="#" title="Hide navigation">Hide Menu</a>
+
+	   	<div class="row"> 
+            <ul id="nav" class="nav">
+                <li class="current"><a href="index.html">Home</a></li>
+                <li class="has-children"><a href="#">Dropdown</a>
+                    <ul>
+                        <li><a href="#">Submenu 01</a></li>
+                        <li><a href="#">Submenu 02</a></li>
+                        <li><a href="#">Submenu 03</a></li>
+                    </ul>
+                </li>
+                <li><a href="demo.html">Demo</a></li>	
+                <li><a href="archives.html">Archives</a></li>
+                <li class="has-children"><a href="single.html">Blog</a>
+                    <ul>
+                        <li><a href="blog.html">Blog Entries</a></li>
+                        <li><a href="single.html">Single Blog</a></li> 
+                    </ul>
+                </li> 
+                <li><a href="page.html">Page</a></li>
+            </ul> <!-- end #nav --> 
+	   	</div> 
+	   </nav> <!-- end #nav-wrap --> 
+   </header> <!-- Header End -->
+
+EOH
+}#}}}
+sub get_keepitsimple_footer {#{{{
+    return <<EOF;
+
+    <!-- Footer
+    ================================================== -->
+    <footer>
+        <div class="row"> 
+      	<div class="twelve columns">	
+				<ul class="social-links">
+               <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+               <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+               <li><a href="#"><i class="fa fa-google-plus"></i></a></li> 
+               <li><a href="#"><i class="fa fa-github-square"></i></a></li>
+               <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+               <li><a href="#"><i class="fa fa-flickr"></i></a></li> 
+               <li><a href="#"><i class="fa fa-skype"></i></a></li>
+            </ul> 
+      	</div>
+        <div class="six columns info">
+            <h3>About Keep It Simple</h3> 
+            <p>This is Photoshop's version  of Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet.
+            Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem
+            nibh id elit. 
+            </p>
+            <p>Lorem ipsum Sed nulla deserunt voluptate elit occaecat culpa cupidatat sit irure sint 
+            sint incididunt cupidatat esse in Ut sed commodo tempor consequat culpa fugiat incididunt.</p>
+         </div>
+         <div class="four columns">
+            <h3>Photostream</h3>
+            <ul class="photostream group">
+               <li><a href="#"><img alt="thumbnail" src="images/thumb.jpg"></a></li>
+               <li><a href="#"><img alt="thumbnail" src="images/thumb.jpg"></a></li>
+               <li><a href="#"><img alt="thumbnail" src="images/thumb.jpg"></a></li>
+               <li><a href="#"><img alt="thumbnail" src="images/thumb.jpg"></a></li>
+               <li><a href="#"><img alt="thumbnail" src="images/thumb.jpg"></a></li>
+               <li><a href="#"><img alt="thumbnail" src="images/thumb.jpg"></a></li>
+               <li><a href="#"><img alt="thumbnail" src="images/thumb.jpg"></a></li>
+               <li><a href="#"><img alt="thumbnail" src="images/thumb.jpg"></a></li>
+            </ul> 
+         </div>
+         <div class="two columns">
+            <h3 class="social">Navigate</h3>
+            <ul class="navigate group">
+               <li><a href="#">Home</a></li>
+               <li><a href="#">Blog</a></li>
+               <li><a href="#">Demo</a></li>
+               <li><a href="#">Archives</a></li>
+               <li><a href="#">About</a></li>
+            </ul>
+         </div>
+         <p class="copyright">&copy; Copyright 2014 Keep It Simple. &nbsp; Design by <a title="Styleshout" href="http://www.styleshout.com/">Styleshout</a>.</p>
+      </div> <!-- End row -->
+      <div id="go-top"><a class="smoothscroll" title="Back to Top" href="#top"><i class="fa fa-chevron-up"></i></a></div>
+   </footer> <!-- End Footer-->
+EOF
+}#}}}
+sub get_keepitsimple_bottom_js {#{{{
+    ### Javascript that needs to appear at the bottom of every page, just 
+    ### above the </body> tag.
+    return <<EOJ;
+    <!-- Java Script
+    ================================================== -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/jquery-1.10.2.min.js"><\/script>')</script>
+    <script type="text/javascript" src="js/jquery-migrate-1.2.1.min.js"></script> 
+    <script src="js/main.js"></script>
+EOJ
 }#}}}
 
 

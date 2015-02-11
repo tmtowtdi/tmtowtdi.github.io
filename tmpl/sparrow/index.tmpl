@@ -1,7 +1,4 @@
-<!DOCTYPE html>
-<!--[if lt IE 8 ]><html class="no-js ie ie7" lang="en"> <![endif]-->
-<!--[if IE 8 ]><html class="no-js ie ie8" lang="en"> <![endif]-->
-<!--[if (gte IE 8)|!(IE)]><!--><html class="no-js" lang="en"> <!--<![endif]-->
+[% doctype %]
 <head>
 	<title>Home | [% top_title %]</title>
     [% dochead %]
@@ -31,7 +28,7 @@
                                     [% IF slide.link %]
                                         <a href="[% slide.link %]">
                                     [% END %]
-                                    <img src="[% slide.image %]" alt="[% IF slide.image_alt %][% slide.image_alt %][% ELSE %]slide image[% END %]" />
+                                    <img src="[% inc %][% slide.image %]" alt="[% IF slide.image_alt %][% slide.image_alt %][% ELSE %]slide image[% END %]" />
                                     [% IF slide.link %]
                                         </a>
                                     [% END %]
@@ -78,7 +75,7 @@
                         <div class="item-wrap">
                             <a href="[% p.local_path %]">
                                 <img alt="[% p.images.0.image_alt %]"
-                                    src="[% p.images.0.image %]">
+                                    src="[% inc %][% p.images.0.image %]">
                                 <div class="overlay"></div>
                                 <div class="link-icon"><i class="fa fa-link"></i></div>
                             </a>
