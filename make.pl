@@ -20,13 +20,15 @@ use Data::Dumper; $Data::Dumper::Indent = 1;
 use Template;
 
 ### Must exist as a subdirectory of ./tmpl/
-my $skin = 'sparrow';
+#my $skin = 'sparrow';
 #my $skin = 'keepitsimple';
+my $skin = 'gh_default';
 
 my $tt          = get_tt();
 my $vars        = get_all_vars();
 
-if( 0 ) { show_vars_and_die( $vars ); }
+if( 0 ) { show_vars_and_die( $vars ); }     # does not process templates
+if( 0 ) { show_vars_and_live( $vars ); }    # does process templates
 
 my $templates   = get_template_list();
 clear_old_output_files();
@@ -42,6 +44,10 @@ sub get_all_vars() {#{{{
     elsif( $skin eq 'keepitsimple' ) {
         $vars = add_keepitsimple_vars($vars);
     }
+    elsif( $skin eq 'gh_default' ) {
+        $vars = add_gh_default_vars($vars);
+    }
+    else { die "You spelled your skin name wrong." }
 
     return $vars;
 }#}}}
@@ -55,10 +61,10 @@ sub get_default_vars() {#{{{
         phone               => "(123) 456-7890 ext. abc",
         physical_address    => get_physical_address(),
         portfolio           => get_portfolio(),
-        site_name           => "My Website",
+        site_name           => "Tmtowtdi.GitHub.io",
         site_slogan         => "My catchy slogan",  # often appears under site_name in smaller font
         team                => get_team_variables(),
-        top_title           => "Jon's Site",
+        top_title           => "tmtowtdi.github.io by tmtowtdi",
     };
 
     return $vars;
@@ -289,7 +295,11 @@ sub get_template_list() {#{{{
             'blog.tmpl'     => 'blog.html',
             'page.tmpl'     => 'page.html',
             'single.tmpl'   => 'single.html',
-        }
+        },
+        gh_default => {
+            'index.tmpl'    => 'index.html',
+        },
+
     };
     return $templates->{$skin};
 }#}}}
@@ -297,6 +307,10 @@ sub show_vars_and_die( $vars ) {#{{{
     my $d = Data::Dumper->new([ $vars ]);
     say $d->Dump;
     exit;
+}#}}}
+sub show_vars_and_live( $vars ) {#{{{
+    my $d = Data::Dumper->new([ $vars ]);
+    say $d->Dump;
 }#}}}
 sub clear_old_output_files {#{{{
     for my $f( glob "*.html") {
@@ -322,9 +336,9 @@ sub write_portfolio_entry_files( $tt, $vars ) {#{{{
 }#}}}
 
 sub add_sparrow_vars( $vars ) {#{{{
-    $vars->{'inc'}          = "skins/sparrow/";        # MUST end with a slash
-    $vars->{'dochead'}      = get_sparrow_dochead();    # Common contents of <head> ... </head>
-    $vars->{'header'}       = get_sparrow_header();     # visible page header
+    $vars->{'inc'}          = "skins/sparrow/";             # MUST end with a slash
+    $vars->{'dochead'}      = get_sparrow_dochead($vars);   # Common contents of <head> ... </head>
+    $vars->{'header'}       = get_sparrow_header();         # visible page header
     $vars->{'footer'}       = get_sparrow_footer();
     $vars->{'bottom_js'}    = get_sparrow_bottom_js();
     $vars->{'blurbs'}       = get_sparrow_index_column_blurbs();
@@ -357,7 +371,7 @@ sub get_sparrow_doctype {#{{{
 <!--[if (gte IE 8)|!(IE)]><!--><html class="no-js" lang="en"> <!--<![endif]-->
 EOT
 }#}}}
-sub get_sparrow_dochead {#{{{
+sub get_sparrow_dochead( $vars ) {#{{{
 
     ### This is only for <head> contents common to all pages on the site.  You 
     ### can still add additional head content as needed on a 
@@ -378,13 +392,13 @@ sub get_sparrow_dochead {#{{{
 
 	<!-- CSS
     ================================================== -->
-    <link rel="stylesheet" href="skins/sparrow/css/default.css">
-	<link rel="stylesheet" href="skins/sparrow/css/layout.css">
-    <link rel="stylesheet" href="skins/sparrow/css/media-queries.css">
+    <link rel="stylesheet" href="$vars->{'inc'}css/default.css">
+	<link rel="stylesheet" href="$vars->{'inc'}css/layout.css">
+    <link rel="stylesheet" href="$vars->{'inc'}css/media-queries.css">
 
     <!-- Script
     ================================================== -->
-	<script src="skins/sparrow/js/modernizr.js"></script>
+	<script src="$vars->{'inc'}js/modernizr.js"></script>
 
     <!-- Favicons
 	================================================== -->
@@ -522,7 +536,7 @@ sub add_sparrow_slide_variables( $vars ) {#{{{
 sub add_keepitsimple_vars( $vars ) {#{{{
     $vars->{'inc'}          = "skins/keepitsimple/";            # MUST end with a slash
     $vars->{'doctype'}      = get_keepitsimple_doctype();       # Above <head> tag
-    $vars->{'dochead'}      = get_keepitsimple_dochead();       # Common contents of <head> ... </head>
+    $vars->{'dochead'}      = get_keepitsimple_dochead($vars);  # Common contents of <head> ... </head>
     $vars->{'header'}       = get_keepitsimple_header($vars);   # visible page header
     $vars->{'footer'}       = get_keepitsimple_footer();
     $vars->{'sidebar'}      = get_keepitsimple_sidebar();
@@ -551,7 +565,7 @@ sub get_keepitsimple_doctype {#{{{
 <!--[if (gte IE 8)|!(IE)]><!--><html class="no-js" lang="en"> <!--<![endif]-->
 EOT
 }#}}}
-sub get_keepitsimple_dochead {#{{{
+sub get_keepitsimple_dochead( $vars ) {#{{{
 
     return <<EOD;
     <!--- Basic Page Needs
@@ -562,13 +576,13 @@ sub get_keepitsimple_dochead {#{{{
 
     <!-- CSS
     ================================================== -->
-    <link rel="stylesheet" href="skins/keepitsimple/css/default.css">
-	<link rel="stylesheet" href="skins/keepitsimple/css/layout.css"> 
-	<link rel="stylesheet" href="skins/keepitsimple/css/media-queries.css"> 
+    <link rel="stylesheet" href="$vars->{'inc'}css/default.css">
+	<link rel="stylesheet" href="$vars->{'inc'}css/layout.css"> 
+	<link rel="stylesheet" href="$vars->{'inc'}css/media-queries.css"> 
 
     <!-- Script
     ================================================== -->
-	<script src="js/modernizr.js"></script>
+	<script src="$vars->{'inc'}js/modernizr.js"></script>
 
     <!-- Favicons
 	================================================== -->
@@ -728,6 +742,33 @@ sub get_keepitsimple_sidebar {#{{{
             </div>
         </div> <!-- end sidebar -->
 EOD
+}#}}}
+
+sub add_gh_default_vars( $vars ) {#{{{
+    $vars->{'inc'}          = "skins/gh_default/";              # MUST end with a slash
+    $vars->{'doctype'}      = get_gh_default_doctype();         # Above <head> tag
+    $vars->{'dochead'}      = get_gh_default_dochead($vars);    # Common contents of <head> ... </head>
+    #$vars->{'header'}       = get_gh_default_header($vars);    # visible page header
+    #$vars->{'footer'}       = get_gh_default_footer();
+    #$vars->{'sidebar'}      = get_gh_default_sidebar();
+    #$vars->{'bottom_js'}    = get_gh_default_bottom_js();
+    return $vars;
+}#}}}
+sub get_gh_default_doctype() {#{{{
+    return "<!doctype html>";
+}#}}}
+sub get_gh_default_dochead( $vars ) {#{{{
+    return <<EOT;
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link rel="stylesheet" href="$vars->{'inc'}stylesheets/styles.css">
+    <link rel="stylesheet" href="$vars->{'inc'}stylesheets/pygment_trac.css">
+    <script src="$vars->{'inc'}javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+EOT
 }#}}}
 
 
