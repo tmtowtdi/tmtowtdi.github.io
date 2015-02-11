@@ -1,10 +1,6 @@
 
-The various templates/skins need to be prepared and placed in tmpl/SKIN_NAME/.
-
-
-Template sources:
-    http://www.styleshout.com/free-templates/sparrow/
-
+Most skins came from http://www.styleshout.com/, with the exception of the 
+gh_default skin, which was created with GitHub's automatic page generator.
 
 Set up a new skin
     - Name it.
