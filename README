@@ -5,3 +5,29 @@ The various templates/skins need to be prepared and placed in tmpl/SKIN_NAME/.
 Template sources:
     http://www.styleshout.com/free-templates/sparrow/
 
+
+Set up a new skin
+    - Name it.
+        - For consistency, go with one word, all lc
+
+    - mkdir tmpl/NAME
+    - mkdir skins/NAME
+
+    - Create or download your template from wherever.  Put it into tmpl/NAME/
+    - Move all of the media (images, css, js, etc) into skins/NAME/
+        - You're usually going to be moving a whole directory.
+          mv images/ ../../skins/NAME/
+          mv css/ ../../skins/NAME/
+          etc
+    - Make sure the template-specific variables in make.pl include an 'inc' 
+      key, which must be set to "skins/NAME/"
+        - No slash at the beginning, must have slash at the end.
+        - All links to media files within your new template set must link to 
+          here.  eg:
+            - <img src="skins/NAME/images/foo.jpg">
+            - <link rel="stylesheet" href="skins/NAME/css/default.css">
+            - <script src="skins/NAME/js/script.js"></script>
+
+    - Any image links in data ($vars in make.pl) should NOT include the 
+      "skins/NAME/" prefix.  Let the templates add those.
+

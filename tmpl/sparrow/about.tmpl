@@ -16,9 +16,9 @@
       <div class="row">
 
          <div class="ten columns centered text-center">
-            <h1>[% page_head %]<span>.</span></h1>
+            <h1>[% about.page_head %]<span>.</span></h1>
 
-            <p>[% page_subhead %]</p>
+            <p>[% about.page_subhead %]</p>
          </div>
 
       </div>
@@ -34,19 +34,19 @@
          <div id="primary" class="eight columns">
 
             <section>
-                <h1>[% team_header %]</h1>
+                <h1>[% team.header %]</h1>
 
                 [% PERL %]
-                    my $first = shift @{ $stash->{'team_intro'}; };
+                    my $first = shift @{ $stash->{'team'}{'intro'}; };
                     print qq{<p class="lead">$first</p>};
-                    foreach my $additional_para( @{$stash->{'team_intro'}} ) {
+                    foreach my $additional_para( @{$stash->{'team'}{'intro'}} ) {
                         print qq{<p>$additional_para</p>};
                     }
                 [% END %]
 
                <div class="row">
                   <div id="team-wrapper" class="bgrid-halves cf">
-                    [% FOREACH mem = team_members %]
+                    [% FOREACH mem = team.members %]
                         <div class="column member">
                             <img src="[% inc %][% mem.profile_image_large %]" alt="[% mem.full_name %]"/>
                             <div class"member-name">

@@ -29,6 +29,7 @@ my $vars        = get_all_vars();
 if( 0 ) { show_vars_and_die( $vars ); }
 
 my $templates   = get_template_list();
+clear_old_output_files();
 write_output_files( $tt, $templates, $vars );
 
 
@@ -46,6 +47,7 @@ sub get_all_vars() {#{{{
 }#}}}
 sub get_default_vars() {#{{{
     my $vars =  {
+        about               => get_about_page_variables(),
         blog_posts          => get_recent_blog_posts(),
         ctoa                => get_call_to_action_variables(),
         email               => get_company_emails(),
@@ -53,31 +55,20 @@ sub get_default_vars() {#{{{
         phone               => "(123) 456-7890 ext. abc",
         physical_address    => get_physical_address(),
         portfolio           => get_portfolio(),
+        site_name           => "My Website",
+        site_slogan         => "My catchy slogan",  # often appears under site_name in smaller font
+        team                => get_team_variables(),
         top_title           => "Jon's Site",
     };
 
-    $vars = add_about_page_variables($vars);
-    $vars = add_slide_variables($vars);
-    $vars = add_team_variables($vars);
-
     return $vars;
 }#}}}
-sub add_about_page_variables( $vars ) {#{{{
+sub get_about_page_variables() {#{{{
     my $about = {
         page_head           => 'About Us',
         page_subhead        => 'Aenean condimentum, lacus sit amet luctus lobortis, dolores et quas molestias excepturi enim tellus ultrices elit, amet consequat enim elit noneas sit amet luctu.',
     };
-    @$vars{ keys %$about } = values %$about;
-    return $vars;
-}#}}}
-sub add_team_variables( $vars ) {#{{{
-    my $team =  {
-        team_header     => "Meet our talented team.",
-        team_intro      => get_team_intro(),
-        team_members    => get_team_members(),
-    };
-    @$vars{ keys %$team } = values %$team;
-    return $vars;
+    return $about;
 }#}}}
 sub get_call_to_action_variables( ) {#{{{
 
@@ -105,30 +96,6 @@ sub get_call_to_action_variables( ) {#{{{
         link    => "http://www.example.com",
     };
     @$vars{ keys %$ctoa } = values %$ctoa;
-    return $vars;
-}#}}}
-sub add_slide_variables( $vars ) {#{{{
-    $vars->{'slides'} = [
-        {
-            ### Required
-            header      => 'LacunaWaX',
-            desc        => "An installable GUI toolkit for The Lacuna Expanse.  No scripting knowledge requried.",
-            image       => "images/sliders/slide-wax.png",
-
-            ### Optional, but include it.
-            image_alt   => "LacunaWaX Screenshot",
-
-            ### Optional
-            link        => "lacunawax.html",
-        },
-        {
-            header      => 'MontyLacuna',
-            desc        => "A GLC port to Python.  Easier and quicker to install, not to mention buggier!",
-            image       => "images/sliders/slide-monty.png",
-            image_alt   => "MontyLacuna Documentation Screenshot",
-            link        => "montylacuna.html",
-        },
-    ];
     return $vars;
 }#}}}
 sub get_company_emails {#{{{
@@ -208,6 +175,10 @@ sub get_portfolio() {#{{{
     return $portfolio;
 }#}}}
 sub get_recent_blog_posts {#{{{
+    ### CHECK
+    ### linking to "single.html" here for each blog is an artifact of the 
+    ### example template.  I'd really need to individually link to each actual 
+    ### blog post.  How that gets done might change on a per-template basis.
 
     ### This should only return the top 3 or 5 (or whatever) recent blog 
     ### posts, and only their summaries.  It's for posting on "see what we've 
@@ -217,6 +188,7 @@ sub get_recent_blog_posts {#{{{
             author  => 'Jonathan D. Barton',
             date    => 'Jan 31, 2014',
             link    => 'single.html',
+            tags    => [qw(lorem ipsum foo)],
             summary => 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium.',
             title   => 'Proin gravida nibh vel velit auctor aliquet Aenean sollicitudin auctor.',
         },
@@ -224,6 +196,7 @@ sub get_recent_blog_posts {#{{{
             author  => 'Joe R. Blow',
             date    => 'Feb 1, 2014',
             link    => 'single.html',
+            tags    => [qw(lorem ipsum bar)],
             summary => 'Iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium.',
             title   => 'Flurble blargle!',
         },
@@ -231,19 +204,31 @@ sub get_recent_blog_posts {#{{{
             author  => 'Steve Wozniak',
             date    => 'Dec 1, 2005',
             link    => 'single.html',
+            tags    => [qw(lorem ipsum photography)],   # every blog has a photography tag, amirite?
             summary => "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in laborum.",
             title   => "What's the deal with the turtlenecks?",
         },
     ];
 
+    for my $b( @$a ) {
+        $b->{'tags_str'} = join ', ', @{$b->{'tags'}};
+    }
+
     return $a;
+}#}}}
+sub get_team_variables() {#{{{
+    my $team =  {
+        header     => "Meet our talented team.",
+        intro      => get_team_intro(),
+        members    => get_team_members(),
+    };
+    return $team;
 }#}}}
 sub get_team_intro {#{{{
     my $paragraphs = [
         "Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor,
         nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate
         cursus a sit amet mauris. Morbi accumsan ipsum velit.",
-
         "Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor,
         nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate
         cursus a sit amet mauris. Morbi accumsan ipsum velit. Nam nec tellus a odio tincidunt auctor a
@@ -313,6 +298,11 @@ sub show_vars_and_die( $vars ) {#{{{
     say $d->Dump;
     exit;
 }#}}}
+sub clear_old_output_files {#{{{
+    for my $f( glob "*.html") {
+        unlink $f;
+    }
+}#}}}
 sub write_output_files( $tt, $tmpls, $vars ) {#{{{
     for my $in( keys %{$tmpls} ) {
         my $out = $tmpls->{$in};
@@ -338,6 +328,9 @@ sub add_sparrow_vars( $vars ) {#{{{
     $vars->{'footer'}       = get_sparrow_footer();
     $vars->{'bottom_js'}    = get_sparrow_bottom_js();
     $vars->{'blurbs'}       = get_sparrow_index_column_blurbs();
+
+    $vars = add_sparrow_slide_variables($vars);
+
     return $vars;
 }#}}}
 sub get_sparrow_bottom_js {#{{{
@@ -501,15 +494,52 @@ sub get_sparrow_index_column_blurbs {#{{{
         },
     ];
 }#}}}
+sub add_sparrow_slide_variables( $vars ) {#{{{
+    $vars->{'slides'} = [
+        {
+            ### Required
+            header      => 'LacunaWaX',
+            desc        => "An installable GUI toolkit for The Lacuna Expanse.  No scripting knowledge requried.",
+            image       => "images/sliders/slide-wax.png",
+
+            ### Optional, but include it.
+            image_alt   => "LacunaWaX Screenshot",
+
+            ### Optional
+            link        => "lacunawax.html",
+        },
+        {
+            header      => 'MontyLacuna',
+            desc        => "A GLC port to Python.  Easier and quicker to install, not to mention buggier!",
+            image       => "images/sliders/slide-monty.png",
+            image_alt   => "MontyLacuna Documentation Screenshot",
+            link        => "montylacuna.html",
+        },
+    ];
+    return $vars;
+}#}}}
 
 sub add_keepitsimple_vars( $vars ) {#{{{
-    $vars->{'inc'}          = "skins/keepitsimple/";        # MUST end with a slash
-    $vars->{'doctype'}      = get_keepitsimple_doctype();    # Above <head> tag
-    $vars->{'dochead'}      = get_keepitsimple_dochead();    # Common contents of <head> ... </head>
-    $vars->{'header'}       = get_keepitsimple_header();     # visible page header
+    $vars->{'inc'}          = "skins/keepitsimple/";            # MUST end with a slash
+    $vars->{'doctype'}      = get_keepitsimple_doctype();       # Above <head> tag
+    $vars->{'dochead'}      = get_keepitsimple_dochead();       # Common contents of <head> ... </head>
+    $vars->{'header'}       = get_keepitsimple_header($vars);   # visible page header
     $vars->{'footer'}       = get_keepitsimple_footer();
+    $vars->{'sidebar'}      = get_keepitsimple_sidebar();
     $vars->{'bottom_js'}    = get_keepitsimple_bottom_js();
     return $vars;
+}#}}}
+sub get_keepitsimple_bottom_js {#{{{
+    ### Javascript that needs to appear at the bottom of every page, just 
+    ### above the </body> tag.
+    return <<EOJ;
+    <!-- Java Script
+    ================================================== -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="skins/keepitsimple/js/jquery-1.10.2.min.js"><\/script>')</script>
+    <script type="text/javascript" src="skins/keepitsimple/js/jquery-migrate-1.2.1.min.js"></script> 
+    <script src="skins/keepitsimple/js/main.js"></script>
+EOJ
 }#}}}
 sub get_keepitsimple_doctype {#{{{
 
@@ -532,9 +562,9 @@ sub get_keepitsimple_dochead {#{{{
 
     <!-- CSS
     ================================================== -->
-    <link rel="stylesheet" href="css/default.css">
-	<link rel="stylesheet" href="css/layout.css"> 
-	<link rel="stylesheet" href="css/media-queries.css"> 
+    <link rel="stylesheet" href="skins/keepitsimple/css/default.css">
+	<link rel="stylesheet" href="skins/keepitsimple/css/layout.css"> 
+	<link rel="stylesheet" href="skins/keepitsimple/css/media-queries.css"> 
 
     <!-- Script
     ================================================== -->
@@ -545,7 +575,7 @@ sub get_keepitsimple_dochead {#{{{
 	<link rel="shortcut icon" href="favicon.png" >
 EOD
 }#}}}
-sub get_keepitsimple_header {#{{{
+sub get_keepitsimple_header( $vars ) {#{{{
     return <<EOH;
 
     <!-- Header
@@ -553,8 +583,8 @@ sub get_keepitsimple_header {#{{{
     <header id="top">
    	<div class="row">
    		<div class="header-content twelve columns">
-            <h1 id="logo-text"><a href="index.html" title="">Keep It Simple.</a></h1>
-            <p id="intro">Put your awesome slogan here...</p>
+            <h1 id="logo-text"><a href="index.html" title="">$vars->{'site_name'}</a></h1>
+            <p id="intro">$vars->{'site_slogan'}</p>
         </div> 
     </div>
     <nav id="nav-wrap"> 
@@ -617,14 +647,14 @@ sub get_keepitsimple_footer {#{{{
          <div class="four columns">
             <h3>Photostream</h3>
             <ul class="photostream group">
-               <li><a href="#"><img alt="thumbnail" src="images/thumb.jpg"></a></li>
-               <li><a href="#"><img alt="thumbnail" src="images/thumb.jpg"></a></li>
-               <li><a href="#"><img alt="thumbnail" src="images/thumb.jpg"></a></li>
-               <li><a href="#"><img alt="thumbnail" src="images/thumb.jpg"></a></li>
-               <li><a href="#"><img alt="thumbnail" src="images/thumb.jpg"></a></li>
-               <li><a href="#"><img alt="thumbnail" src="images/thumb.jpg"></a></li>
-               <li><a href="#"><img alt="thumbnail" src="images/thumb.jpg"></a></li>
-               <li><a href="#"><img alt="thumbnail" src="images/thumb.jpg"></a></li>
+               <li><a href="#"><img alt="thumbnail" src="skins/keepitsimple/images/thumb.jpg"></a></li>
+               <li><a href="#"><img alt="thumbnail" src="skins/keepitsimple/images/thumb.jpg"></a></li>
+               <li><a href="#"><img alt="thumbnail" src="skins/keepitsimple/images/thumb.jpg"></a></li>
+               <li><a href="#"><img alt="thumbnail" src="skins/keepitsimple/images/thumb.jpg"></a></li>
+               <li><a href="#"><img alt="thumbnail" src="skins/keepitsimple/images/thumb.jpg"></a></li>
+               <li><a href="#"><img alt="thumbnail" src="skins/keepitsimple/images/thumb.jpg"></a></li>
+               <li><a href="#"><img alt="thumbnail" src="skins/keepitsimple/images/thumb.jpg"></a></li>
+               <li><a href="#"><img alt="thumbnail" src="skins/keepitsimple/images/thumb.jpg"></a></li>
             </ul> 
          </div>
          <div class="two columns">
@@ -643,17 +673,61 @@ sub get_keepitsimple_footer {#{{{
    </footer> <!-- End Footer-->
 EOF
 }#}}}
-sub get_keepitsimple_bottom_js {#{{{
-    ### Javascript that needs to appear at the bottom of every page, just 
-    ### above the </body> tag.
-    return <<EOJ;
-    <!-- Java Script
-    ================================================== -->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="js/jquery-1.10.2.min.js"><\/script>')</script>
-    <script type="text/javascript" src="js/jquery-migrate-1.2.1.min.js"></script> 
-    <script src="js/main.js"></script>
-EOJ
+sub get_keepitsimple_sidebar {#{{{
+
+    return <<EOD;
+        <div id="sidebar" class="four columns">
+            <div class="widget widget_search">
+                <h3>Search</h3> 
+                <form action="#">
+                     <input type="text" value="Search here..." onblur="if(this.value == '') { this.value = 'Search here...'; }" onfocus="if (this.value == 'Search here...') { this.value = ''; }" class="text-search">
+                     <input type="submit" value="" class="submit-search">
+                </form>
+            </div>
+            <div class="widget widget_categories group">
+                <h3>Categories.</h3> 
+                    <ul>
+                        <li><a href="#" title="">My Category</a> (2)</li>
+                        <li><a href="#" title="">Ghost</a> (14)</li>
+                        <li><a href="#" title="">Joomla</a> (5)</li>
+                        <li><a href="#" title="">Drupal</a> (3)</li>
+                        <li><a href="#" title="">Magento</a> (2)</li>
+                        <li><a href="#" title="">Uncategorized</a> (9)</li>
+                    </ul>
+            </div>
+            <div class="widget widget_text group">
+                <h3>Widget Text.</h3>
+                <p>
+                    Lorem ipsum Ullamco commodo laboris sit dolore commodo 
+                    aliquip incididunt fugiat esse dolor aute fugiat minim 
+                    eiusmod do velit labore fugiat officia ad sit culpa labore 
+                    in consectetur sint cillum sint consectetur voluptate 
+                    adipisicing Duis irure magna ut sit amet 
+                    reprehenderit.
+                </p>
+            </div>
+            <div class="widget widget_tags">
+                <h3>Post Tags.</h3>
+                <div class="tagcloud group">
+                    <a href="#">Corporate</a>
+                    <a href="#">Onepage</a>
+                    <a href="#">Agency</a>
+                    <a href="#">Multipurpose</a>
+                    <a href="#">Blog</a>
+                    <a href="#">Landing Page</a>
+                    <a href="#">Resume</a>
+                </div>
+            </div>
+            <div class="widget widget_popular">
+               <h3>Popular Post.</h3>
+               <ul class="link-list">
+                  <li><a href="#">Sint cillum consectetur voluptate.</a></li>
+                  <li><a href="#">Lorem ipsum Ullamco commodo.</a></li>
+                  <li><a href="#">Fugiat minim eiusmod do.</a></li> 
+               </ul>
+            </div>
+        </div> <!-- end sidebar -->
+EOD
 }#}}}
 
 

@@ -1,350 +1,268 @@
 [% doctype %]
 <head>
-
-   <!--- Basic Page Needs
-   ================================================== -->
-   <meta charset="utf-8">
-	<title>Keep It Simple.</title>
-	<meta name="description" content="">  
-	<meta name="author" content="">
-
-   <!-- CSS
-    ================================================== -->
-   <link rel="stylesheet" href="css/default.css">
-	<link rel="stylesheet" href="css/layout.css">  
-	<link rel="stylesheet" href="css/media-queries.css"> 
-
-   <!-- Script
-   ================================================== -->
-	<script src="js/modernizr.js"></script>
-
-   <!-- Favicons
-	================================================== -->
-	<link rel="shortcut icon" href="favicon.png" >
-
+	<title>Blog | [% top_title %]</title>
+    [% dochead %]
 </head>
 
 <body>
 
-   <!-- Header
+    [% header %]
+
+   <!-- Page Title
    ================================================== -->
-   <header id="top">
+   <div id="page-title">
 
-   	<div class="row">
+      <div class="row">
 
-   		<div class="header-content twelve columns">
+         <div class="ten columns centered text-center">
+            <h1>Our Blog<span>.</span></h1>
 
-		      <h1 id="logo-text"><a href="index.html" title="">Keep It Simple.</a></h1>
-				<p id="intro">Put your awesome slogan here...</p>
+            <p>Aenean condimentum, lacus sit amet luctus lobortis, dolores et quas molestias excepturi
+            enim tellus ultrices elit, amet consequat enim elit noneas sit amet luctu. </p>
+         </div>
 
-			</div>			
+      </div>
 
-	   </div>
-
-	   <nav id="nav-wrap"> 
-
-	   	<a class="mobile-btn" href="#nav-wrap" title="Show navigation">Show Menu</a>
-		   <a class="mobile-btn" href="#" title="Hide navigation">Hide Menu</a>
-
-	   	<div class="row">    		            
-
-			   	<ul id="nav" class="nav">
-			      	<li><a href="index.html">Home</a></li>
-			      	<li class="has-children"><a href="#">Dropdown</a>
-	                  <ul>
-	                     <li><a href="#">Submenu 01</a></li>
-	                     <li><a href="#">Submenu 02</a></li>
-	                     <li><a href="#">Submenu 03</a></li>
-	                  </ul>
-	               </li>
-	               <li><a href="demo.html">Demo</a></li>	
-	               <li><a href="archives.html">Archives</a></li>
-			      	<li class="has-children current"><a href="blog.html">Blog</a>
-							<ul>
-	                     <li><a href="blog.html">Blog Entries</a></li>
-	                     <li><a href="single.html">Single Blog</a></li>	                     
-	                  </ul>
-			      	</li>		      	
-			      	<li><a href="page.html">Page</a></li>
-			   	</ul> <!-- end #nav -->			   	 
-
-	   	</div> 
-
-	   </nav> <!-- end #nav-wrap --> 	     
-
-   </header> <!-- Header End -->
+   </div> <!-- Page Title End-->
 
    <!-- Content
    ================================================== -->
-   <div id="content-wrap">
+   <div class="content-outer">
 
-   	<div class="row">
+      <div id="page-content" class="row">
 
-   		<div id="main" class="eight columns">
+         <div id="primary" class="eight columns">
 
-	   		<article class="entry">
+            <article class="post">
 
-					<header class="entry-header">
+               <div class="entry-header cf">
 
-						<h2 class="entry-title">
-							<a href="single.html" title="">Hey, We Love Open Sans!</a>
-						</h2> 				 
-					
-						<div class="entry-meta">
-							<ul>
-								<li>July 12, 2014</li>
-								<span class="meta-sep">&bull;</span>								
-								<li><a href="#" title="" rel="category tag">Ghost</a></li>
-								<span class="meta-sep">&bull;</span>
-								<li>John Doe</li>
-							</ul>
-						</div> 
-					 
-					</header> 
-					
-					<div class="entry-content">
-						<p>Duis ex ad cupidatat tempor Excepteur cillum cupidatat fugiat nostrud cupidatat dolor sunt sint sit nisi est eu exercitation incididunt adipisicing veniam velit id fugiat enim mollit amet anim veniam dolor dolor irure velit commodo cillum sit nulla ullamco magna amet magna cupidatat qui labore cillum sit in tempor veniam consequat non laborum adipisicing aliqua ea nisi sint ut quis proident ullamco ut dolore culpa occaecat ut laboris in sit minim cupidatat ut dolor voluptate enim veniam consequat occaecat fugiat in adipisicing in amet Ut nulla nisi non ut enim aliqua laborum mollit quis nostrud sed sed.</p>
-					</div> 
+                  <h1><a href="single.html" title="">Proin gravida nibh vel velit auctor aliquet Aenean sollicitudin auctor.</a></h1>
 
-				</article> <!-- end entry -->
+                  <p class="post-meta">
 
-				<article class="entry">
-	   			
-					<header class="entry-header">
+                     <time class="date" datetime="2014-01-14T11:24">Jan 14, 2014</time>
+                     /
+                     <span class="categories">
+                     <a href="#">Design</a> /
+                     <a href="#">User Inferface</a> /
+                     <a href="#">Web Design</a>
+                     </span>
 
-						<h2 class="entry-title">
-							<a href="single.html" title="">We All Love Good Typography.</a>
-						</h2> 				 
-					
-						<div class="entry-meta">
-							<ul>
-								<li>July 11, 2014</li>
-								<span class="meta-sep">&bull;</span>							
-								<li>
-									<a href="#" title="" rel="category tag">Wordpress</a>,
-									<a href="#" title="" rel="category tag">Ghost</a>  
-								</li>
-								<span class="meta-sep">&bull;</span>
-								<li>Jane Doe</li>
-							</ul>
-						</div>
-					 
-					</header> 			
+                  </p>
 
-					<div class="entry-content">
-						<p>Duis ex ad cupidatat tempor Excepteur cillum cupidatat fugiat nostrud cupidatat dolor sunt sint sit nisi est eu exercitation incididunt adipisicing veniam velit id fugiat enim mollit amet anim veniam dolor dolor irure velit commodo cillum sit nulla ullamco magna amet magna cupidatat qui labore cillum sit in tempor veniam consequat non laborum adipisicing aliqua ea nisi sint ut quis proident ullamco ut dolore culpa occaecat ut laboris in sit minim cupidatat ut dolor voluptate enim veniam consequat occaecat fugiat in.</p>
-					</div> 
+               </div>
 
-				</article> <!-- end entry -->
+               <div class="post-thumb">
+                  <a href="single.html" title=""><img src="[% inc %]images/post-image/post-image-1300x500-01.jpg" alt="post-image" title="post-image"></a>
+               </div>
 
-				<article class="entry">
-	   			
-					<header class="entry-header">
+               <div class="post-content">
 
-						<h2 class="entry-title">
-							<a href="single.html" title="">White Space Everywhere.</a>
-						</h2> 				 
-					
-						<div class="entry-meta">
-							<ul>
-								<li>July 10, 2014</li>
-								<span class="meta-sep">&bull;</span>								
-								<li>
-									<a href="#" title="" rel="category tag">Joomla</a>,
-									<a href="#" title="" rel="category tag">Drupal</a>  
-								</li>
-								<span class="meta-sep">&bull;</span>
-								<li>Naruto Uzumaki</li>
-							</ul>
-						</div> 
-					 
-					</header> 			
+                  <p>Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor,
+                  nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate
+                  cursus a sit amet mauris. Morbi accumsan ipsum velit. Nam nec tellus a odio tincidunt auctor a
+                  ornare odio. Sed non  mauris vitae erat consequat auctor eu in elit. </p>
 
-					<div class="entry-content">
-						<p>Duis ex ad cupidatat tempor Excepteur cillum cupidatat fugiat nostrud cupidatat dolor sunt sint sit nisi est eu exercitation incididunt adipisicing veniam velit id fugiat enim mollit amet anim veniam dolor dolor irure velit commodo cillum sit nulla ullamco magna amet magna cupidatat qui labore cillum sit in tempor veniam consequat non laborum adipisicing aliqua ea nisi sint ut quis proident ullamco ut dolore culpa occaecat ut laboris in sit minim cupidatat ut dolor voluptate enim veniam consequat occaecat fugiat in adipisicing in amet Ut nulla nisi non ut enim aliqua laborum mollit quis nostrud sed sed.</p>
-					</div> 
+               </div>
 
-				</article> <!-- end entry -->  
+            </article> <!-- post end -->
 
-				<article class="entry">
-	   			
-					<header class="entry-header">
+            <article class="post">
 
-						<h2 class="entry-title">
-							<a href="single.html" title="">Simple And Minimalist Designs.</a>
-						</h2> 				 
-					
-						<div class="entry-meta">
-							<ul>
-								<li>July 09, 2014</li>
-								<span class="meta-sep">&bull;</span>								
-								<li>
-									<a href="#" title="" rel="category tag">Ghost</a>  
-								</li>
-								<span class="meta-sep">&bull;</span>
-								<li>Naruto Uzumaki</li>
-							</ul>
-						</div> 
-					 
-					</header> 			
+               <div class="entry-header cf">
 
-					<div class="entry-content">
-						<p>Duis ex ad cupidatat tempor Excepteur cillum cupidatat fugiat nostrud cupidatat dolor sunt sint sit nisi est eu exercitation incididunt adipisicing veniam velit id fugiat enim mollit amet anim veniam dolor dolor irure velit commodo cillum sit nulla ullamco magna amet magna cupidatat qui labore cillum sit in tempor veniam consequat non laborum adipisicing aliqua ea nisi sint ut quis proident ullamco ut dolore culpa occaecat ut laboris in sit minim cupidatat ut dolor voluptate enim veniam consequat occaecat fugiat in adipisicing in amet Ut nulla nisi non ut enim aliqua laborum mollit quis nostrud sed sed.</p>
-					</div> 
+                  <h1><a href="single.html" title="">Proin gravida nibh vel velit auctor aliquet Aenean sollicitudin auctor.</a></h1>
 
-				</article> <!-- end entry --> 
+                  <p class="post-meta">
 
-				<div class="pagenav">
-	            <p>
-	            <a rel="prev" href="#">Prev</a>   	
-	            <a rel="next" href="#">Next</a>     		
-	            </p>
-            </div> 	
+                     <time class="date" datetime="2014-01-14T11:24">Jan 14, 2013</time>
+                     /
+                     <span class="categories">
+                     <a href="#">Design</a> /
+                     <a href="#">User Inferface</a> /
+                     <a href="#">Web Design</a>
+                     </span>
 
+                  </p>
 
-   		</div> <!-- end main -->
+               </div>
 
-   		<div id="sidebar" class="four columns">
+               <div class="post-thumb">
+                  <a href="single.html" title=""><img src="[% inc %]images/post-image/post-image-1300x500-02.jpg" alt="post-image" title="post-image"></a>
+               </div>
 
-   			<div class="widget widget_search">
-                  <h3>Search</h3> 
+               <div class="post-content">
+
+                  <p>Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor,
+                  nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate
+                  cursus a sit amet mauris. Morbi accumsan ipsum velit. Nam nec tellus a odio tincidunt auctor a
+                  ornare odio. Sed non  mauris vitae erat consequat auctor eu in elit. </p>
+
+               </div>
+
+            </article> <!-- post end -->
+
+            <article class="post">
+
+               <div class="entry-header cf">
+
+                  <h1><a href="single.html" title="">Proin gravida nibh vel velit auctor aliquet Aenean sollicitudin auctor.</a></h1>
+
+                  <p class="post-meta">
+
+                     <time class="date" datetime="2014-01-14T11:24">Jan 14, 2014</time>
+                     /
+                     <span class="categories">
+                     <a href="#">Design</a> /
+                     <a href="#">User Inferface</a> /
+                     <a href="#">Web Design</a>
+                     </span>
+
+                  </p>
+
+               </div>
+
+               <div class="post-thumb">
+                  <a href="single.html" title=""><img src="[% inc %]images/post-image/post-image-1300x500-03.jpg" alt="post-image" title="post-image"></a>
+               </div>
+
+               <div class="post-content">
+
+                  <p>Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor,
+                  nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate
+                  cursus a sit amet mauris. Morbi accumsan ipsum velit. Nam nec tellus a odio tincidunt auctor a
+                  ornare odio. Sed non  mauris vitae erat consequat auctor eu in elit. </p>
+
+               </div>
+
+            </article> <!-- post end -->
+
+            <!-- Pagination -->
+            <nav class="col full pagination">
+  			      <ul>
+                  <li><span class="page-numbers prev inactive">Prev</span></li>
+  				      <li><span class="page-numbers current">1</span></li>
+  				      <li><a href="#" class="page-numbers">2</a></li>
+                  <li><a href="#" class="page-numbers">3</a></li>
+                  <li><a href="#" class="page-numbers">4</a></li>
+                  <li><a href="#" class="page-numbers">5</a></li>
+                  <li><a href="#" class="page-numbers">6</a></li>
+                  <li><a href="#" class="page-numbers">7</a></li>
+                  <li><a href="#" class="page-numbers">8</a></li>
+                  <li><a href="#" class="page-numbers">9</a></li>
+  				      <li><a href="#" class="page-numbers next">Next</a></li>
+  			      </ul>
+  		      </nav>
+
+         </div> <!-- Primary End-->
+
+         <div id="secondary" class="four columns end">
+
+            <aside id="sidebar">
+
+               <div class="widget widget_search">
+                  <h5>Search</h5>
                   <form action="#">
 
-                     <input type="text" value="Search here..." onblur="if(this.value == '') { this.value = 'Search here...'; }" onfocus="if (this.value == 'Search here...') { this.value = ''; }" class="text-search">
-                     <input type="submit" value="" class="submit-search">
+                     <input class="text-search" type="text" onfocus="if (this.value == 'Search here...') { this.value = ''; }" onblur="if(this.value == '') { this.value = 'Search here...'; }" value="Search here...">
+                     <input type="submit" class="submit-search" value="">
 
                   </form>
                </div>
 
-   			<div class="widget widget_categories group">
-   				<h3>Categories.</h3> 
-   				<ul>
-						<li><a href="#" title="">Wordpress</a> (2)</li>
-						<li><a href="#" title="">Ghost</a> (14)</li>
-						<li><a href="#" title="">Joomla</a> (5)</li>
-						<li><a href="#" title="">Drupal</a> (3)</li>
-						<li><a href="#" title="">Magento</a> (2)</li>
-						<li><a href="#" title="">Uncategorized</a> (9)</li>						
-					</ul>
-				</div>
+               <div class="widget widget_text">
+                  <h5 class="widget-title">Text Widget</h5>
+                  <div class="textwidget">Proin gravida nibh vel velit auctor aliquet.
+                  Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum,
+                  nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate cursus
+                  a sit amet mauris. Morbi accumsan ipsum velit. </div>
+		         </div>
 
-				<div class="widget widget_text group">
-					<h3>Widget Text.</h3>
-
-   				<p>Lorem ipsum Ullamco commodo laboris sit dolore commodo aliquip incididunt fugiat esse dolor aute fugiat minim eiusmod do velit labore fugiat officia ad sit culpa labore in consectetur sint cillum sint consectetur voluptate adipisicing Duis irure magna ut sit amet reprehenderit.</p>
-
-   			</div>
-
-   			<div class="widget widget_tags">
-               <h3>Post Tags.</h3>
-
-               <div class="tagcloud group">
-                	<a href="#">Corporate</a>
-                  <a href="#">Onepage</a>
-                  <a href="#">Agency</a>
-                  <a href="#">Multipurpose</a>
-                  <a href="#">Blog</a>
-                  <a href="#">Landing Page</a>
-                  <a href="#">Resume</a>
+               <div class="widget widget_categories">
+                  <h5 class="widget-title">Categories</h5>
+                  <ul class="link-list cf">
+                     <li><a href="#">Designs</a></li>
+                     <li><a href="#">Internet</a></li>
+                     <li><a href="#">Typography</a></li>
+                     <li><a href="#">Photography</a></li>
+                     <li><a href="#">Web Development</a></li>
+                     <li><a href="#">Projects</a></li>
+                     <li><a href="#">Other Stuff</a></li>
+                  </ul>
                </div>
-                  
-            </div>
 
-            <div class="widget widget_popular">
-               <h3>Popular Post.</h3>
+               <div class="widget widget_tag_cloud">
+                  <h5 class="widget-title">Tags</h5>
+                  <div class="tagcloud cf">
+                     <a href="#">drupal</a>
+                     <a href="#">joomla</a>
+                     <a href="#">ghost</a>
+                     <a href="#">wordpress</a>
+                  </div>
+               </div>
 
-               <ul class="link-list">
-                  <li><a href="#">Sint cillum consectetur voluptate.</a></li>
-                  <li><a href="#">Lorem ipsum Ullamco commodo.</a></li>
-                  <li><a href="#">Fugiat minim eiusmod do.</a></li>                     
-               </ul>
-                  
-            </div>
-   			
-   		</div> <!-- end sidebar -->
+               <div class="widget widget_photostream">
+                  <h5>Photostream</h5>
+                  <ul class="photostream cf">
+                     <li><a href="#"><img src="[% inc %]images/thumb.jpg" alt="thumbnail"></a></li>
+                     <li><a href="#"><img src="[% inc %]images/thumb.jpg" alt="thumbnail"></a></li>
+                     <li><a href="#"><img src="[% inc %]images/thumb.jpg" alt="thumbnail"></a></li>
+                     <li><a href="#"><img src="[% inc %]images/thumb.jpg" alt="thumbnail"></a></li>
+                     <li><a href="#"><img src="[% inc %]images/thumb.jpg" alt="thumbnail"></a></li>
+                     <li><a href="#"><img src="[% inc %]images/thumb.jpg" alt="thumbnail"></a></li>
+                     <li><a href="#"><img src="[% inc %]images/thumb.jpg" alt="thumbnail"></a></li>
+                     <li><a href="#"><img src="[% inc %]images/thumb.jpg" alt="thumbnail"></a></li>
+                  </ul>
+	            </div>
 
-   	</div> <!-- end row -->
+            </aside>
 
-   </div> <!-- end content-wrap -->
-   
+         </div> <!-- Secondary End-->
 
-   <!-- Footer
+      </div>
+
+   </div> <!-- Content End-->
+
+   <!-- Tweets Section
    ================================================== -->
-   <footer>
+   <section id="tweets">
 
-      <div class="row"> 
+      <div class="row">
 
-      	<div class="twelve columns">	
-				<ul class="social-links">
-               <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-               <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-               <li><a href="#"><i class="fa fa-google-plus"></i></a></li>               
-               <li><a href="#"><i class="fa fa-github-square"></i></a></li>
-               <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-               <li><a href="#"><i class="fa fa-flickr"></i></a></li>               
-               <li><a href="#"><i class="fa fa-skype"></i></a></li>
-            </ul>			
-      	</div>
-      	
-         <div class="six columns info">
-
-            <h3>About Keep It Simple</h3> 
-
-            <p>This is Photoshop's version  of Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet.
-            Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem
-            nibh id elit. 
-            </p>
-
-            <p>Lorem ipsum Sed nulla deserunt voluptate elit occaecat culpa cupidatat sit irure sint 
-            sint incididunt cupidatat esse in Ut sed commodo tempor consequat culpa fugiat incididunt.</p>
-
+         <div class="tweeter-icon align-center">
+            <i class="fa fa-twitter"></i>
          </div>
 
-         <div class="four columns">
+         <ul id="twitter" class="align-center">
+            <li>
+               <span>
+               This is Photoshop's version  of Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet.
+               Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum
+               <a href="#">http://t.co/CGIrdxIlI3</a>
+               </span>
+               <b><a href="#">2 Days Ago</a></b>
+            </li>
+            <!--
+            <li>
+               <span>
+               This is Photoshop's version  of Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet.
+               Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum
+               <a href="#">http://t.co/CGIrdxIlI3</a>
+               </span>
+               <b><a href="#">3 Days Ago</a></b>
+            </li>
+            -->
+         </ul>
 
-            <h3>Photostream</h3>
-            
-            <ul class="photostream group">
-               <li><a href="#"><img alt="thumbnail" src="images/thumb.jpg"></a></li>
-               <li><a href="#"><img alt="thumbnail" src="images/thumb.jpg"></a></li>
-               <li><a href="#"><img alt="thumbnail" src="images/thumb.jpg"></a></li>
-               <li><a href="#"><img alt="thumbnail" src="images/thumb.jpg"></a></li>
-               <li><a href="#"><img alt="thumbnail" src="images/thumb.jpg"></a></li>
-               <li><a href="#"><img alt="thumbnail" src="images/thumb.jpg"></a></li>
-               <li><a href="#"><img alt="thumbnail" src="images/thumb.jpg"></a></li>
-               <li><a href="#"><img alt="thumbnail" src="images/thumb.jpg"></a></li>
-            </ul>           
+         <p class="align-center"><a href="#" class="button">Follow us</a></p>
 
-         </div>
+      </div>
 
-         <div class="two columns">
-            <h3 class="social">Navigate</h3>
+   </section> <!-- Tweets Section End-->
 
-            <ul class="navigate group">
-               <li><a href="#">Home</a></li>
-               <li><a href="#">Blog</a></li>
-               <li><a href="#">Demo</a></li>
-               <li><a href="#">Archives</a></li>
-               <li><a href="#">About</a></li>
-            </ul>
-         </div>
-
-         <p class="copyright">&copy; Copyright 2014 Keep It Simple. &nbsp; Design by <a title="Styleshout" href="http://www.styleshout.com/">Styleshout</a>.</p>
-        
-      </div> <!-- End row -->
-
-      <div id="go-top"><a class="smoothscroll" title="Back to Top" href="#top"><i class="fa fa-chevron-up"></i></a></div>
-
-   </footer> <!-- End Footer-->
-
-
-   <!-- Java Script
-   ================================================== -->
-   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-   <script>window.jQuery || document.write('<script src="js/jquery-1.10.2.min.js"><\/script>')</script>
-   <script type="text/javascript" src="js/jquery-migrate-1.2.1.min.js"></script>  
-   <script src="js/main.js"></script>
+   [% footer %]
+   [% bottom_js %]
 
 </body>
-
 </html>
