@@ -19,18 +19,23 @@ use experimental 'signatures';
 use Data::Dumper;
 use Template;
 
+### Must exist as a subdirectory of ./tmpl/
+my $skin = 'sparrow';
 
 my $tt          = get_tt();
 my $vars        = get_all_vars();
-
 if( 0 ) { show_vars_and_die( $vars ); }
+
 my $templates   = get_template_list();
 write_output_files( $tt, $templates, $vars );
 
 
 sub get_all_vars() {#{{{
     my $vars = get_default_vars();
-    $vars = add_sparrow_vars($vars);
+
+    if( $skin eq 'sparrow' ) {
+        $vars = add_sparrow_vars($vars);
+    }
 
     ### Add calls to other more specific var setters.  We might need subs 
     ### specific to one or more templates for whatever reason.
@@ -272,19 +277,23 @@ sub get_team_members {#{{{
 }#}}}
 sub get_tt() {#{{{
     return Template->new({
-        INCLUDE_PATH    => './tmpl',
+        INCLUDE_PATH    => "./tmpl/$skin",
         INTERPOLATE     => 1,
         EVAL_PERL       => 1,
     }) || die "$Template::ERROR\n";
 }#}}}
 sub get_template_list() {#{{{
-    return {
+    my $templates = {
         # template   => html file to be written to
-        'index.tmpl'            => 'index.html',
-        'portfolio-index.tmpl'  => 'portfolio-index.html',
-        'contact.tmpl'          => 'contact.html',
-        'about.tmpl'            => 'about.html',
-    }
+
+        sparrow => {
+            'index.tmpl'            => 'index.html',
+            'portfolio-index.tmpl'  => 'portfolio-index.html',
+            'contact.tmpl'          => 'contact.html',
+            'about.tmpl'            => 'about.html',
+        }
+    };
+    return $templates->{$skin};
 }#}}}
 sub show_vars_and_die( $vars ) {#{{{
     my $d = Data::Dumper->new([ $vars ]);
