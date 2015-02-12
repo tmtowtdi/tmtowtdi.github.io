@@ -21,14 +21,14 @@ use Template;
 
 ### Must exist as a subdirectory of ./tmpl/
 #my $skin = 'sparrow';
-my $skin = 'keepitsimple';
-#my $skin = 'gh_default';
+#my $skin = 'keepitsimple';
+my $skin = 'gh_default';
 
 my $tt          = get_tt();
 my $vars        = get_all_vars();
 
 if( 0 ) { show_vars_and_die( $vars ); }     # does not process templates
-if( 0 ) { show_vars_and_live( $vars ); }    # does process templates
+if( 1 ) { show_vars_and_live( $vars ); }    # does process templates
 
 my $templates   = get_template_list();
 clear_old_output_files();
@@ -54,7 +54,7 @@ sub get_all_vars() {#{{{
 sub get_default_vars() {#{{{
     my $vars =  {
         about               => get_about_page_variables(),
-        blog_posts          => get_recent_blog_posts(),
+        #blog_posts          => get_recent_blog_posts(),
         ctoa                => get_call_to_action_variables(),
         email               => get_company_emails(),
         social              => get_company_social_accounts(),
@@ -283,7 +283,7 @@ sub get_template_list() {#{{{
 
         sparrow => {
             'index.tmpl'            => 'index.html',
-            'blog.tmpl'             => 'blog.html',
+            #'blog.tmpl'             => 'blog.html',
             'portfolio-index.tmpl'  => 'portfolio-index.html',
             'contact.tmpl'          => 'contact.html',
             'about.tmpl'            => 'about.html',
@@ -292,7 +292,7 @@ sub get_template_list() {#{{{
             'index.tmpl'    => 'index.html',
             'demo.tmpl'     => 'demo.html',
             'archives.tmpl' => 'archives.html',
-            'blog.tmpl'     => 'blog.html',
+            #'blog.tmpl'     => 'blog.html',
             'page.tmpl'     => 'page.html',
             'single.tmpl'   => 'single.html',
         },
@@ -430,12 +430,14 @@ sub get_sparrow_header {#{{{
                     <a class="mobile-btn" href="#" title="Hide navigation">Hide navigation</a>
                     <ul id="nav" class="nav">
                         <li class="current"><a href="index.html">Home</a></li>
+                        <!--
                         <li><span><a href="blog.html">Blog</a></span>
                             <ul>
                                 <li><a href="blog.html">Blog Index</a></li>
                                 <li><a href="single.html">Post</a></li>
                             </ul>
                         </li>
+                        -->
                         <li><span><a href="portfolio-index.html">Portfolio</a></span>
                             <ul>
                                 <li><a href="portfolio-index.html">Portfolio Index</a></li>
