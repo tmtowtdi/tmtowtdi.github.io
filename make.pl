@@ -772,8 +772,10 @@ sub add_gh_default_vars( $vars ) {#{{{
     $vars->{'inc'}          = "skins/gh_default/";              # MUST end with a slash
     $vars->{'doctype'}      = get_gh_default_doctype();         # Above <head> tag
     $vars->{'dochead'}      = get_gh_default_dochead($vars);    # Common contents of <head> ... </head>
-    $vars->{'header'}       = get_gh_default_header($vars);     # visible page header
-    $vars->{'bottom_js'}    = get_gh_default_bottom_js();
+    #$vars->{'header'}       = get_gh_default_header($vars);    # visible page header
+    #$vars->{'footer'}       = get_gh_default_footer();
+    #$vars->{'sidebar'}      = get_gh_default_sidebar();
+    #$vars->{'bottom_js'}    = get_gh_default_bottom_js();
     return $vars;
 }#}}}
 sub get_gh_default_doctype() {#{{{
@@ -790,29 +792,6 @@ sub get_gh_default_dochead( $vars ) {#{{{
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-EOT
-}#}}}
-sub get_gh_default_bottom_js() {#{{{
-    return <<EOJ;
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-EOJ
-}#}}}
-sub get_gh_default_header( $vars ) {#{{{
-    return <<EOT;
-        <header>
-            <h1>$vars->{'site_name'}</h1>
-            <p>$vars->{'site_slogan'}</p>
-            <p class="view">
-                <a href="https://github.com/tmtowtdi">View the Project on GitHub <small>tmtowtdi</small></a>
-            </p>
-            <ul>
-                <li class="single">
-                    <a href="https://github.com/tmtowtdi/tmtowtdi.github.io">
-                        View On <strong>GitHub</strong>
-                    </a>
-                </li>
-            </ul>
-        </header>
 EOT
 }#}}}
 
