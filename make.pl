@@ -20,15 +20,19 @@ use Data::Dumper; $Data::Dumper::Indent = 1;
 use Template;
 
 ### Must exist as a subdirectory of ./tmpl/
+### more of a company template, but flexible.
 #my $skin = 'sparrow';
-my $skin = 'keepitsimple';
-#my $skin = 'gh_default';
+
+### really more of a blog template.
+#my $skin = 'keepitsimple';
+
+my $skin = 'gh_default';
 
 my $tt          = get_tt();
 my $vars        = get_all_vars();
 
 if( 0 ) { show_vars_and_die( $vars ); }     # does not process templates
-if( 0 ) { show_vars_and_live( $vars ); }    # does process templates
+if( 1 ) { show_vars_and_live( $vars ); }    # does process templates
 
 my $templates   = get_template_list();
 clear_old_output_files();
@@ -52,17 +56,30 @@ sub get_all_vars() {#{{{
     return $vars;
 }#}}}
 sub get_default_vars() {#{{{
+
+    ### This script, as it exists, is at least partially for example purposes. 
+    ### Some of these variables don't necessarily make sense together.
+    ###
+    ### 'author' indicates a single-person website, like my gh-pages user 
+    ### site.
+    ###
+    ### But things like 'team' and 'social' are more for a company website.
+    ###
+    ### IRL, you'd pick the ones that make sense and discard the others.
+
     my $vars =  {
         about               => get_about_page_variables(),
+        author              => "tmtowtdi (Jonathan D. Barton)",
         blog_posts          => get_recent_blog_posts(),
         ctoa                => get_call_to_action_variables(),
         email               => get_company_emails(),
         social              => get_company_social_accounts(),
         phone               => "(123) 456-7890 ext. abc",
         physical_address    => get_physical_address(),
+        portfolio_intro     => get_portfolio_intro(),
         portfolio           => get_portfolio(),
         site_name           => "Tmtowtdi.GitHub.io",
-        site_slogan         => "My catchy slogan",  # often appears under site_name in smaller font
+        site_slogan         => "Perl and stuff.",  # often appears under site_name in smaller font
         team                => get_team_variables(),
         top_title           => "tmtowtdi.github.io by tmtowtdi",
     };
@@ -179,6 +196,13 @@ sub get_portfolio() {#{{{
 
     ];
     return $portfolio;
+}#}}}
+sub get_portfolio_intro() {#{{{
+
+    my $intro =  <<EOT;
+    These are some of the projects I've been working on recently.
+EOT
+    return $intro;
 }#}}}
 sub get_recent_blog_posts {#{{{
     ### CHECK
@@ -748,10 +772,8 @@ sub add_gh_default_vars( $vars ) {#{{{
     $vars->{'inc'}          = "skins/gh_default/";              # MUST end with a slash
     $vars->{'doctype'}      = get_gh_default_doctype();         # Above <head> tag
     $vars->{'dochead'}      = get_gh_default_dochead($vars);    # Common contents of <head> ... </head>
-    #$vars->{'header'}       = get_gh_default_header($vars);    # visible page header
-    #$vars->{'footer'}       = get_gh_default_footer();
-    #$vars->{'sidebar'}      = get_gh_default_sidebar();
-    #$vars->{'bottom_js'}    = get_gh_default_bottom_js();
+    $vars->{'header'}       = get_gh_default_header($vars);     # visible page header
+    $vars->{'bottom_js'}    = get_gh_default_bottom_js();
     return $vars;
 }#}}}
 sub get_gh_default_doctype() {#{{{
@@ -768,6 +790,29 @@ sub get_gh_default_dochead( $vars ) {#{{{
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+EOT
+}#}}}
+sub get_gh_default_bottom_js() {#{{{
+    return <<EOJ;
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+EOJ
+}#}}}
+sub get_gh_default_header( $vars ) {#{{{
+    return <<EOT;
+        <header>
+            <h1>$vars->{'site_name'}</h1>
+            <p>$vars->{'site_slogan'}</p>
+            <p class="view">
+                <a href="https://github.com/tmtowtdi">View the Project on GitHub <small>tmtowtdi</small></a>
+            </p>
+            <ul>
+                <li class="single">
+                    <a href="https://github.com/tmtowtdi/tmtowtdi.github.io">
+                        View On <strong>GitHub</strong>
+                    </a>
+                </li>
+            </ul>
+        </header>
 EOT
 }#}}}
 
