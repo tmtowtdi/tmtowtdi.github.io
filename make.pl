@@ -328,11 +328,14 @@ sub get_template_list() {#{{{
     return $templates->{$skin};
 }#}}}
 sub show_vars_and_die( $vars ) {#{{{
-    my $d = Data::Dumper->new([ $vars ]);
-    say $d->Dump;
+    show_vars_and_live( $vars );
     exit;
 }#}}}
 sub show_vars_and_live( $vars ) {#{{{
+    for my $k( sort keys %$vars ) {
+        say $k
+    }
+    say "--------------------";
     my $d = Data::Dumper->new([ $vars ]);
     say $d->Dump;
 }#}}}
