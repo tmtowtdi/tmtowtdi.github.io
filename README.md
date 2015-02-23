@@ -1,6 +1,8 @@
 
 # README
 
+[![Join the chat at https://gitter.im/tmtowtdi/tmtowtdi.github.io](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/tmtowtdi/tmtowtdi.github.io?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ## Template sources
 Most skins came from http://www.styleshout.com/, with the exception of the 
 gh_default skin, which was created with GitHub's automatic page generator.
